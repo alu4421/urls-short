@@ -9,7 +9,7 @@ require 'pp'
 require 'data_mapper'
 
 DataMapper.setup( :default, ENV['DATABASE_URL'] || 
-                            "sqlite3://#{Dir.pwd}/my_shortened_urls.db" )
+                            "sqlite3://#{Dir.pwd}/db/my_shortened_urls.db" )
 DataMapper::Logger.new($stdout, :debug)
 DataMapper::Model.raise_on_save_failure = true 
 
@@ -18,25 +18,26 @@ require_relative 'model'
 DataMapper.finalize
 
 #DataMapper.auto_migrate!
-DataMapper.auto_upgrade!
+DataMapper.auto_upgrade! # No borra información , actualiza.
 
-Base = 36
+Base = 36 #base alfanumerica 36, no contiene la ñ para la ñ incorporar la base 64.
 
 get '/' do
-  puts "inside get '/': #{params}"
   @list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20)
-  # in SQL => SELECT * FROM "ShortenedUrl" ORDER BY "id" ASC
   haml :index
 end
 
 post '/' do
-  puts "inside post '/': #{params}"
   uri = URI::parse(params[:url])
   if uri.is_a? URI::HTTP or uri.is_a? URI::HTTPS then
     begin
-      @short_url = ShortenedUrl.first_or_create(:url => params[:url])
+      if params[:opc_url] == ""
+        @short_url = ShortenedUrl.first_or_create(:url => params[:url])
+      else
+        @short_opc_url = ShortenedUrl.first_or_create(:url => params[:url], :opc_url => params[:opc_url])
+      end
     rescue Exception => e
-      puts "EXCEPTION!!!!!!!!!!!!!!!!!!!"
+      puts "EXCEPTION!"
       pp @short_url
       puts e.message
     end
@@ -47,15 +48,17 @@ post '/' do
 end
 
 get '/:shortened' do
-  puts "inside get '/:shortened': #{params}"
+  #URLs sin parametros urls corto, por lo que se usara la id
   short_url = ShortenedUrl.first(:id => params[:shortened].to_i(Base))
+  #URLs con parametros urls corto, por lo que se usara el campo opc_url
+  short_opc_url = ShortenedUrl.first(:opc_url => params[:shortened])
 
-  # HTTP status codes that start with 3 (such as 301, 302) tell the
-  # browser to go look for that resource in another location. This is
-  # used in the case where a web page has moved to another location or
-  # is no longer at the original location. The two most commonly used
-  # redirection status codes are 301 Move Permanently and 302 Found.
-  redirect short_url.url, 301
+  if short_opc_url #Si tiene información, entonces devolvera por opc_ulr
+    redirect short_opc_url.url, 301
+  else
+    redirect short_url.url, 301
+  end
 end
+
 
 error do haml :index end

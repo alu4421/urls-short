@@ -3,7 +3,7 @@
   %head
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "content-type"}/
     %meta{:charset => "utf-8"}/
-    %title Popularidad SYTW
+    %title SYTW URLS
     %meta{:content => "width=device-width, initial-scale=1, maximum-scale=1", :name => "viewport"}/
     %link{:href => "/css/bootstrap.min.css", :rel => "stylesheet"}/
     /[if lt IE 9]
@@ -22,6 +22,7 @@
             .form-group{:style => "text-align:center;margin:0 auto;"}
               %label(for="url")
               %input.form-control.input-lg{:autofocus => "", :name => "url", :placeholder => "Introduce Tu URL", :size => "60", :type => "text", :value => ""}/
+              %input.form-control.input-lg{:name => "opc_url", :placeholder => "Opcional URL", :size => "20", :type => "text", :value => ""}/
               %button.btn.btn-lg.btn-primary{:type => "submit", :value => "Submit"} CORTAR
       / /row
       %br/
