@@ -7,6 +7,8 @@ require 'uri'
 require 'pp'
 #require 'socket'
 require 'data_mapper'
+require 'omniauth-oauth2'      
+require 'omniauth-google-oauth2'
 
 DataMapper.setup( :default, ENV['DATABASE_URL'] || 
                             "sqlite3://#{Dir.pwd}/db/my_shortened_urls.db" )
@@ -22,9 +24,24 @@ DataMapper.auto_upgrade! # No borra información , actualiza.
 
 Base = 36 #base alfanumerica 36, no contiene la ñ para la ñ incorporar la base 64.
 
+#Control del OmniAuth
+use OmniAuth::Builder do       
+  config = YAML.load_file 'config/config.yml'
+  provider :google_oauth2, config['identifier'], config['secret']
+end
+  
+enable :sessions               
+set :session_secret, '*&(^#234a)'
+
 get '/' do
-  @list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20)
+    @list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20)
   haml :index
+end
+
+#Cuando es redirigido de Omniauth
+get '/auth/:name/callback' do
+    @auth = request.env['omniauth.auth']
+    redirect 'http://www.google.es'
 end
 
 post '/' do
