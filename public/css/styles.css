@@ -9,9 +9,8 @@ h1 {
 }
 
 .lead {
-	color:#DDCCEE;
+	color:#efefef;
 }
-
 
 /* Custom container */
 .container-full {
@@ -29,7 +28,7 @@ h1 {
 }
 
 .v-center {
-  margin-top:2%;
+  margin-top:10%;
 }
 
 .container-down {
