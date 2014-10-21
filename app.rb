@@ -22,7 +22,9 @@ DataMapper.finalize
 #DataMapper.auto_migrate!
 DataMapper.auto_upgrade! # No borra información , actualiza.
 
+#Variable global
 Base = 36 #base alfanumerica 36, no contiene la ñ para la ñ incorporar la base 64.
+$email = ""
 
 #Control del OmniAuth
 use OmniAuth::Builder do       
@@ -33,25 +35,29 @@ end
 enable :sessions               
 set :session_secret, '*&(^#234a)'
 
+
 get '/' do
-    @list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20)
+    @list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20,:email => $email)
   haml :index
 end
 
 #Cuando es redirigido de Omniauth
 get '/auth/:name/callback' do
     @auth = request.env['omniauth.auth']
-    redirect 'http://www.google.es'
+    $email = @auth['info'].email
+    @list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20, :email => $email)
+  haml :index
 end
+
 
 post '/' do
   uri = URI::parse(params[:url])
   if uri.is_a? URI::HTTP or uri.is_a? URI::HTTPS then
     begin
       if params[:opc_url] == ""
-        @short_url = ShortenedUrl.first_or_create(:url => params[:url])
+        @short_url = ShortenedUrl.first_or_create(:url => params[:url], :opc_url => params[:opc_url], :email => $email)
       else
-        @short_opc_url = ShortenedUrl.first_or_create(:url => params[:url], :opc_url => params[:opc_url])
+        @short_opc_url = ShortenedUrl.first_or_create(:url => params[:url], :opc_url => params[:opc_url], :email => $email)
       end
     rescue Exception => e
       puts "EXCEPTION!"
