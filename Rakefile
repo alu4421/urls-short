@@ -1,3 +1,14 @@
+
+#metodos para los test
+
+task :default => :test
+
+desc "run test"
+  task :test do
+    sh "ruby test/test.rb"
+end
+
+
 desc "run the http server"
 task :default do
   sh "ruby app.rb"
