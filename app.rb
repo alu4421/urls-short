@@ -10,8 +10,17 @@ require 'data_mapper'
 require 'omniauth-oauth2'      
 require 'omniauth-google-oauth2'
 
-DataMapper.setup( :default, ENV['DATABASE_URL'] || 
-                            "sqlite3://#{Dir.pwd}/db/my_shortened_urls.db" )
+
+configure :development, :test do
+  DataMapper.setup( :default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/my_shortened_urls.db" )
+end
+
+
+configure :production do #heroku
+  DataMapper.setup(:default, ENV['DATABASE_URL'])
+end
+#DataMapper.setup( :default, ENV['DATABASE_URL'] || 
+#                            "sqlite3://#{Dir.pwd}/db/my_shortened_urls.db" )
 DataMapper::Logger.new($stdout, :debug)
 DataMapper::Model.raise_on_save_failure = true 
 
@@ -21,18 +30,6 @@ DataMapper.finalize
 
 #DataMapper.auto_migrate!
 DataMapper.auto_upgrade! # No borra información , actualiza.
-
-
-
-configure :development do
-  DataMapper.setup( :default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/my_shortened_urls.db" )
-end
-
-
-configure :production do #heroku
-  DataMapper.setup(:default, ENV['DATABASE_URL'])
-end
-
 
 #Variable global
 Base = 36 #base alfanumerica 36, no contiene la ñ para la ñ incorporar la base 64.

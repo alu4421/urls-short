@@ -1,8 +1,3 @@
-
-#metodos para los test
-
-task :default => :test
-
 desc "run test"
   task :test do
     sh "ruby test/test.rb"
