@@ -12,15 +12,14 @@ require 'omniauth-google-oauth2'
 
 
 configure :development, :test do
-  DataMapper.setup( :default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/my_shortened_urls.db" )
+  DataMapper.setup( :default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/db/my_shortened_urls.db" )
 end
 
 
-configure :production do #heroku
+configure :production do
   DataMapper.setup(:default, ENV['DATABASE_URL'])
 end
-#DataMapper.setup( :default, ENV['DATABASE_URL'] || 
-#                            "sqlite3://#{Dir.pwd}/db/my_shortened_urls.db" )
+
 DataMapper::Logger.new($stdout, :debug)
 DataMapper::Model.raise_on_save_failure = true 
 
@@ -85,7 +84,10 @@ post '/' do
 end
 
 get '/:shortened' do
+  #URLs sin parametros urls corto, por lo que se usara la id
   short_url = ShortenedUrl.first(:id => params[:shortened].to_i(Base), :email => $email)
+  #URLs con parametros urls corto, por lo que se usara el campo opc_url
+  short_opc_url = ShortenedUrl.first(:opc_url => params[:shortened], :email => $email)
 
   if short_opc_url #Si tiene información, entonces devolvera por opc_ulr
     redirect short_opc_url.url, 301
