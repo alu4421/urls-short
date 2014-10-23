@@ -22,6 +22,18 @@ DataMapper.finalize
 #DataMapper.auto_migrate!
 DataMapper.auto_upgrade! # No borra información , actualiza.
 
+
+
+configure :development do
+  DataMapper.setup( :default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/my_shortened_urls.db" )
+end
+
+
+configure :production do #heroku
+  DataMapper.setup(:default, ENV['DATABASE_URL'])
+end
+
+
 #Variable global
 Base = 36 #base alfanumerica 36, no contiene la ñ para la ñ incorporar la base 64.
 $email = ""
