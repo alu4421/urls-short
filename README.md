@@ -8,7 +8,7 @@ La cantidad de información que residen en Internet es tan grande que las direcc
 
 Con la llegada de los SMS y las plataformas de redes sociales como Twitter o Identi.ca, que soportan hasta 140 caracteres por mensaje, se hizo necesario crear un sistema para poder adjuntar un link en el menor espacio posible. Así fue como nacieron estas herramientas web, por ahí por el año 2001 con el primero de estos servicios: tinyurl.com
 
-La gracia de estos acortadores es que permiten que largas direcciones pasen a achicarse hasta en un 90%, dejando atrás esas poco estéticas e incómodas direcciones web.
+Los acortadores permiten que las direcciones convencionales pasen a reducirse hasta en un 90%, dejando atrás esas poco estéticas e incómodas direcciones web.
 
 
 ###Proyecto:
@@ -19,4 +19,4 @@ La gracia de estos acortadores es que permiten que largas direcciones pasen a ac
 
 -------
 
-####Haniel
+####Haniel y Karen
