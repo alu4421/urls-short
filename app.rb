@@ -72,9 +72,9 @@ end
 
 get '/:shortened' do
   #URLs sin parametros urls corto, por lo que se usara la id
-  short_url = ShortenedUrl.first(:id => params[:shortened].to_i(Base))
+  short_url = ShortenedUrl.first(:id => params[:shortened].to_i(Base), :email => $email)
   #URLs con parametros urls corto, por lo que se usara el campo opc_url
-  short_opc_url = ShortenedUrl.first(:opc_url => params[:shortened])
+  short_opc_url = ShortenedUrl.first(:opc_url => params[:shortened], :email => $email)
 
   if short_opc_url #Si tiene información, entonces devolvera por opc_ulr
     redirect short_opc_url.url, 301
