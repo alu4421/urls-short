@@ -6,4 +6,5 @@ gem 'dm-sqlite-adapter'
 gem 'sqlite3'
 gem 'sinatra-contrib'
 gem 'haml'
-
+gem 'omniauth-oauth2'      
+gem 'omniauth-google-oauth2'
