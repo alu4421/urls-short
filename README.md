@@ -16,8 +16,6 @@ Los acortadores permiten que las direcciones convencionales pasen a reducirse ha
 - Despliege en [Github](https://github.com/alu4421/urls-short.git)
 - Despliege en [Heroku](http://my-url-short.herokuapp.com)
 
-
-
 -------
 
 ####Haniel y Karen
